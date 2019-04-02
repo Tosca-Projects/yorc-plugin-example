@@ -19,4 +19,10 @@ export CGO_ENABLED=0
 build:
 	@echo "--> Running go build"
 	@cd src && go build -o ../bin/my-plugin
+	@echo "--> Embedding custom types in binary"
+	@rm -f ./build/embeddedResources.zip
+	@zip -q -r ./build/embeddedResources.zip ./tosca/mycustom-types.yaml
+	@cat ./build/embeddedResources.zip >> ./bin/my-plugin
+	@zip -A ./bin/my-plugin > /dev/null
+
 .PHONY: build

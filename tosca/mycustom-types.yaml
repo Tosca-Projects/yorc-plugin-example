@@ -1,4 +1,4 @@
-tosca_definitions_version: alien_dsl_2_0_0
+tosca_definitions_version: yorc_tosca_simple_yaml_1_0
 
 metadata:
   template_name: mytosca-types
@@ -6,7 +6,7 @@ metadata:
   template_author: yorc
 
 imports:
-  - tosca-normative-types:1.0.0-ALIEN20
+  - <normative-types.yml>
 
 artifact_types:
   mytosca.artifacts.Implementation.MyImplementation:

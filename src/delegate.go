@@ -65,7 +65,6 @@ func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Config
 	// Emit a log or an event
 	events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********Provisioning node %q of type %q", nodeName, nodeType)
 
-
 	for _, instanceName := range instances {
 		// TODO: add here the code allowing to create a Compute Instance
 		deployments.SetInstanceStateWithContextualLogs(ctx, kv, deploymentID, nodeName, instanceName, tosca.NodeStateStarted)

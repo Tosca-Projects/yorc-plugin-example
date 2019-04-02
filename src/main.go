@@ -15,38 +15,12 @@
 package main
 
 import (
+	"log"
+
 	"github.com/ystia/yorc/v3/plugin"
 	"github.com/ystia/yorc/v3/prov"
+
 )
-
-// TOSCA definition content
-// (a yaml file content)
-var def = []byte(`tosca_definitions_version: yorc_tosca_simple_yaml_1_0
-
-metadata:
-  template_name: mytosca-types
-  template_version: 1.0.0
-  template_author: yorc
-
-imports:
-  - <normative-types.yml>
-
-artifact_types:
-  mytosca.artifacts.Implementation.MyImplementation:
-    derived_from: tosca.artifacts.Implementation
-    description: My dummy implementation artifact
-    file_ext: [ myext ]
-
-node_types:
-  mytosca.types.Compute:
-    derived_from: tosca.nodes.Compute
-
-  mytosca.types.Soft:
-    derived_from: tosca.nodes.SoftwareComponent
-    interfaces:
-      Standard:
-        create: dothis.myext
-`)
 
 func main() {
 	// Create configuration that defines the type of plugins to be served.
@@ -59,8 +33,16 @@ func main() {
 	servConfig = new(plugin.ServeOpts)
 
 	// Add TOSCA Definitions contained in the def variable.
-	// The mycustom-types.yaml key can be used (imported) by applications deployed to the extended Yorc
-	servConfig.Definitions = map[string][]byte{"mycustom-types.yaml": def}
+	// For this example, TOSCA definitions are provided in a yaml file mycustom-types.yaml
+	// bundled in this binary (see Makefile)
+	// The mycustom-types.yaml key can be then by used (imported) by applications
+	// deployed to the extended Yorc, as the example tosca/topology.yaml is doing
+	var err error
+	servConfig.Definitions, err = getToscaResources()
+	if err != nil {
+		log.Printf("Error getting bundle TOSCA resources: %+v\n", err)
+		return
+	}
 
 	// Set DelegateFunc that implements a DelegateExecutor for the TOSCA component types specified in DelegateSupportedTypes
 	// The delegateExecutor is defined in delegate.go
