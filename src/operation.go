@@ -47,6 +47,6 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 	}
 
 	// Emit a log or an event
-	events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("******Executing opeartion %q on node %q", operation.Name, nodeName)
+	events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("******Executing operation %q on node %q", operation.Name, nodeName)
 	return nil
 }
