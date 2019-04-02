@@ -14,8 +14,9 @@
 # limitations under the License.
 
 export GO111MODULE=on
+export CGO_ENABLED=0
 
 build:
 	@echo "--> Running go build"
-	@cd src && go build -o ../my-plugin
+	@cd src && go build -o ../bin/my-plugin
 .PHONY: build
