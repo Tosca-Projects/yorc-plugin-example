@@ -1,12 +1,15 @@
 # Yorc Plugin example
 
+[![Build Status](https://travis-ci.org/ystia/yorc-plugin-example.svg?branch=master)](https://travis-ci.org/ystia/yorc-plugin-example) [![Go Report Card](https://goreportcard.com/badge/github.com/ystia/yorc-plugin-example)](https://goreportcard.com/report/github.com/ystia/yorc-plugin-example)
+
 This repository provides an example of plugin extending the Ystia orchestrator, as described in [Yorc documentation on plugins](https://yorc.readthedocs.io/en/latest/plugins.html).
 
 The plugin example implemented here provides :
-  * a new TOSCA definition for a Compute Instance to create on demand, in file `tosca/mycustom-types.yaml`
-  * a delegate executor that will manage the provisioning of such compute instance (here it just prints logs and send events)
-  * an operation executor allowing to execute operations (here it just prints logs and send events)
-  * This plugin expects an infrastructure `myinfra` property `myprop` to be defined (in a real case, it could be a URL and credentials to access the service allowing to manage the infrastructure). 
+
+* a new TOSCA definition for a Compute Instance to create on demand, in file `tosca/mycustom-types.yaml`
+* a delegate executor that will manage the provisioning of such compute instance (here it just prints logs and send events)
+* an operation executor allowing to execute operations (here it just prints logs and send events)
+* This plugin expects an infrastructure `myinfra` property `myprop` to be defined (in a real case, it could be a URL and credentials to access the service allowing to manage the infrastructure).
 
 ## Build
 
@@ -73,7 +76,7 @@ as well as the event sent by our plugin operation executor:
 
 You can check one of the Yorc implementation for OpenStack, AWS, Google Cloud, hosts pool, or SLURM.
 For example:
-  * the SLURM implementation of [ExecDelegate](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/executor.go#L84) which is calling SLURM command `salloc` to allocate resources
-  * the SLURM implementation of [ExecAsyncOperation](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/executor.go#L64) which is calling SLURM `sbatch` to submit a job.
-  * the [registration](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/init.go#L28) of these delegate and operation executors for Yorc [TOSCA SLURM types](https://github.com/ystia/yorc/blob/v3.2.0-M4/data/tosca/yorc-slurm-types.yml).
 
+* the SLURM implementation of [ExecDelegate](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/executor.go#L84) which is calling SLURM command `salloc` to allocate resources
+* the SLURM implementation of [ExecAsyncOperation](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/executor.go#L64) which is calling SLURM `sbatch` to submit a job.
+* the [registration](https://github.com/ystia/yorc/blob/v3.2.0-M4/prov/slurm/init.go#L28) of these delegate and operation executors for Yorc [TOSCA SLURM types](https://github.com/ystia/yorc/blob/v3.2.0-M4/data/tosca/yorc-slurm-types.yml).
