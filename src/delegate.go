@@ -61,6 +61,9 @@ func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Config
 
 	// Use the deployments api to get info about the node to provision
 	nodeType, err := deployments.GetNodeType(cc.KV(), deploymentID, nodeName)
+	if err != nil {
+		return err
+	}
 
 	// Emit a log or an event
 	events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********Provisioning node %q of type %q", nodeName, nodeType)

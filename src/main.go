@@ -19,7 +19,6 @@ import (
 
 	"github.com/ystia/yorc/v3/plugin"
 	"github.com/ystia/yorc/v3/prov"
-
 )
 
 func main() {
@@ -27,8 +26,8 @@ func main() {
 	// In servConfig can be set :
 	// - TOSCA definitions for an extended Yorc
 	// - A DelegateExecutor for some TOSCA component types
-	// - An OperationExecutor for some TOSCA atrifacts types
-	// - An InfrastructureUsageCollector for specific instrastructures to be monitored
+	// - An OperationExecutor for some TOSCA artifacts types
+	// - An InfrastructureUsageCollector for specific infrastructures to be monitored
 	var servConfig *plugin.ServeOpts
 	servConfig = new(plugin.ServeOpts)
 
