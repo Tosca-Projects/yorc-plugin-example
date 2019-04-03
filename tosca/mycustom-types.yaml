@@ -1,0 +1,43 @@
+tosca_definitions_version: yorc_tosca_simple_yaml_1_0
+
+metadata:
+  template_name: mytosca-types
+  template_version: 0.1.0-SNAPSHOT
+  template_author: yorc
+
+imports:
+  - <normative-types.yml>
+
+artifact_types:
+  mytosca.artifacts.Implementation.MyImplementation:
+    derived_from: tosca.artifacts.Implementation
+    description: My dummy implementation artifact
+    file_ext: [ myext ]
+
+node_types:
+  mytosca.types.Compute:
+    derived_from: tosca.nodes.Compute
+    properties:
+      image_id:
+        type: string
+        description: Image ID
+        required: false
+        default: "myImageID"
+      instance_type:
+        type: string
+        description: Instance type representing flavor (combination of CPU, memory, storage)
+        required: false
+  mytosca.types.Soft:
+    derived_from: tosca.nodes.SoftwareComponent
+    properties:
+      myProperty1:
+        description: Dummy property
+        type: string
+        required: true
+        default: "value1" 
+    interfaces:
+      Standard:
+        create:
+          inputs:
+            var1: {get_property: [SELF, myProperty1]}
+          implementation: create.myext

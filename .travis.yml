@@ -1,0 +1,15 @@
+language: go
+go:
+  - stable
+
+sudo: required
+
+services:
+  - docker
+
+
+script:
+  - make build
+  - ./test-docker.sh
+
+
