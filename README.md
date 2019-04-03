@@ -1,3 +1,5 @@
+# Yorc Plugin example
+
 This repository provides an example of plugin extending the Ystia orchestrator, as described in [Yorc documentation on plugins](https://yorc.readthedocs.io/en/latest/plugins.html).
 
 The plugin example implemented here provides :
