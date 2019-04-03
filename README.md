@@ -40,11 +40,11 @@ Define as well the infrastructure `myinfra` property `myprop` used by the exampl
 ```bash
 $ docker run -d --rm \
     -e 'YORC_INFRA_MYINFRA_MYPROP=myvalue' \
-	-e 'YORC_LOG=1' \
-	--mount "type=bind,src=$PWD/bin,dst=/var/yorc/plugins" \
-	--mount "type=bind,src=$PWD/tosca,dst=/var/yorc/topology" \
+    -e 'YORC_LOG=1' \
+    --mount "type=bind,src=$PWD/bin,dst=/var/yorc/plugins" \
+    --mount "type=bind,src=$PWD/tosca,dst=/var/yorc/topology" \
     --name yorc \
-	ystia-docker.jfrog.io/ystia/yorc:latest
+    ystia-docker.jfrog.io/ystia/yorc:latest
 ```
 
 Now that a Yorc server is running, it has automatically loaded the plugin available through the mount in the default plugins directory `/var/yorc/plugins`, and delegate/operation executors able to manage our new types are now registered.
