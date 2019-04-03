@@ -8,8 +8,8 @@ The plugin example implemented here provides :
 
 * a new TOSCA definition for a Compute Instance to create on demand, in file [tosca/mycustom-types.yaml](https://github.com/ystia/yorc-plugin-example/blob/master/tosca/mycustom-types.yaml)
 * an example of application TOSCA topology template using this new type, in file [tosca/topology.yaml](https://github.com/ystia/yorc-plugin-example/blob/master/tosca/topology.yaml)
-* a delegate executor that will manage the provisioning of such compute instance (here it just prints logs and send events)
-* an operation executor allowing to execute operations (here it just prints logs and send events)
+* a [delegate executor](https://github.com/ystia/yorc-plugin-example/blob/master/src/delegate.go) that will manage the provisioning of such compute instance (here it just prints logs and send events)
+* an [operation executor](https://github.com/ystia/yorc-plugin-example/blob/master/src/operation.go) allowing to execute operations (here it just prints logs and send events)
 * This plugin expects an infrastructure `myinfra` property `myprop` to be defined (in a real case, it could be a URL and credentials to access the service allowing to manage the infrastructure).
 
 ## Build
