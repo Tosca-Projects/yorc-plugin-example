@@ -15,8 +15,7 @@
 package main
 
 import (
-	"log"
-
+	"github.com/ystia/yorc/v3/log"
 	"github.com/ystia/yorc/v3/plugin"
 	"github.com/ystia/yorc/v3/prov"
 )
