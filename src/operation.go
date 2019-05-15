@@ -18,21 +18,13 @@ import (
 	"context"
 	"fmt"
 	stdlog "log"
-	"os"
 	"time"
 
-	hclog "github.com/hashicorp/go-hclog"
 	"github.com/ystia/yorc/v3/config"
 	"github.com/ystia/yorc/v3/events"
 	"github.com/ystia/yorc/v3/log"
 	"github.com/ystia/yorc/v3/prov"
 )
-
-var hclogger = hclog.New(&hclog.LoggerOptions{
-	Level:      hclog.Debug,
-	Output:     os.Stderr,
-	JSONFormat: true,
-})
 
 type operationExecutor struct{}
 
@@ -51,18 +43,11 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 	log.Printf("Executing operation %q", operation.Name)
 
 	// Printing logs using the standard logger.
-	// To have the Yorc server parent process correctly infer the log level,
-	// first setting the standard log ouput as described at:
-	// https://github.com/hashicorp/go-hclog/#use-this-with-code-that-uses-the-standard-library-logger
-	//
-	// The following log levels recognized by Hashicorp logger will be inferred
-	// by Yorc Server from the log message prefix:
+	// The following log levels will be inferred by Yorc Server from the log
+	// message prefix:
 	// [DEBUG], [INFO], [WARN], [ERROR]
-	stdlog.SetOutput(hclogger.StandardWriter(&hclog.StandardLoggerOptions{InferLevels: true}))
-	stdlog.SetPrefix("")
-	stdlog.SetFlags(0)
-
-	stdlog.Printf("[WARN] This is a plugin warning log example")
+	stdlog.Printf("[WARN] This is a plugin warning log on standard log example")
+	stdlog.Printf("This is a plugin log on standard log example")
 
 	_, err := cfg.GetConsulClient()
 	if err != nil {
