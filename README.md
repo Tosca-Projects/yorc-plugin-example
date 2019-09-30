@@ -14,7 +14,7 @@ The plugin example implemented here provides :
 
 ## Build
 
-On a linux host, install [go 1.11](https://golang.org/dl/) or a newer version.
+On a linux host, install [go 1.13](https://golang.org/dl/) or a newer version.
 Then build the plugin running :
 
 ```bash
