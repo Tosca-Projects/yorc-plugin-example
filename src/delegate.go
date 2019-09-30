@@ -16,18 +16,19 @@ package main
 
 import (
 	"context"
-	"log"
 
-	"github.com/ystia/yorc/v3/config"
-	"github.com/ystia/yorc/v3/deployments"
-	"github.com/ystia/yorc/v3/events"
-	"github.com/ystia/yorc/v3/tasks"
-	"github.com/ystia/yorc/v3/tosca"
+	"github.com/ystia/yorc/v4/config"
+	"github.com/ystia/yorc/v4/deployments"
+	"github.com/ystia/yorc/v4/events"
+	"github.com/ystia/yorc/v4/log"
+	"github.com/ystia/yorc/v4/tasks"
+	"github.com/ystia/yorc/v4/tosca"
 )
 
 type delegateExecutor struct{}
 
 func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Configuration, taskID, deploymentID, nodeName, delegateOperation string) error {
+	log.Debugf("Entering plugin ExecDelegate")
 	// Here is how to retrieve config parameters from Yorc config file
 	if conf.Infrastructures["myinfra"] != nil {
 		log.Printf("********Got myinfra infrastructure configured")

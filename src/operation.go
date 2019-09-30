@@ -17,12 +17,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	stdlog "log"
 	"time"
 
-	"github.com/ystia/yorc/v3/config"
-	"github.com/ystia/yorc/v3/events"
-	"github.com/ystia/yorc/v3/prov"
+	"github.com/ystia/yorc/v4/config"
+	"github.com/ystia/yorc/v4/events"
+	"github.com/ystia/yorc/v4/log"
+	"github.com/ystia/yorc/v4/prov"
 )
 
 type operationExecutor struct{}
@@ -33,7 +34,21 @@ func (d *operationExecutor) ExecAsyncOperation(ctx context.Context, conf config.
 
 func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Configuration, taskID, deploymentID, nodeName string, operation prov.Operation) error {
 
-	log.Printf("************Hello from myOperationExecutor")
+	// Printing Yorc logs at different levels in the plugin,
+	// Yorc server will filter these logs according to its logging level
+
+	// Printing a debug level message
+	log.Debugf("Entering ExecOperation")
+	// Printing an INFO level message
+	log.Printf("Executing operation %q", operation.Name)
+
+	// Printing logs using the standard logger.
+	// The following log levels will be inferred by Yorc Server from the log
+	// message prefix:
+	// [DEBUG], [INFO], [WARN], [ERROR]
+	stdlog.Printf("[WARN] This is a plugin warning log on standard log example")
+	stdlog.Printf("This is a plugin log on standard log example")
+
 	_, err := cfg.GetConsulClient()
 	if err != nil {
 		return err

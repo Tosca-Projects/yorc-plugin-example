@@ -15,10 +15,9 @@
 package main
 
 import (
-	"log"
-
-	"github.com/ystia/yorc/v3/plugin"
-	"github.com/ystia/yorc/v3/prov"
+	"github.com/ystia/yorc/v4/log"
+	"github.com/ystia/yorc/v4/plugin"
+	"github.com/ystia/yorc/v4/prov"
 )
 
 func main() {
