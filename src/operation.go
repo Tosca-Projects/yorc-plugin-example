@@ -22,6 +22,7 @@ import (
 
 	"github.com/ystia/yorc/v4/config"
 	"github.com/ystia/yorc/v4/events"
+	"github.com/ystia/yorc/v4/locations"
 	"github.com/ystia/yorc/v4/log"
 	"github.com/ystia/yorc/v4/prov"
 )
@@ -54,11 +55,19 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 		return err
 	}
 
-	if cfg.Infrastructures["my-plugin"] != nil {
-		for _, k := range cfg.Infrastructures["my-plugin"].Keys() {
-			log.Printf("configuration key: %s", k)
+	var locationProps config.DynamicMap
+	locationMgr, err := locations.GetManager(cfg)
+	if err == nil {
+		return err
+	}
+
+	locationProps, err = locationMgr.GetLocationProperties("my-plugin-location", "my-plugin-infra")
+	if err == nil {
+		log.Printf("********Got my-plugin-location properties")
+		for k, v := range locationProps {
+			log.Printf("location key property: %s", k)
+			log.Printf("location key value: %s", v)
 		}
-		log.Printf("Secret key: %q", cfg.Infrastructures["my-plugin"].GetStringOrDefault("test", "not found!"))
 	}
 
 	// Emit a log or an event

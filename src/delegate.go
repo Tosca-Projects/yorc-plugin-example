@@ -20,6 +20,7 @@ import (
 	"github.com/ystia/yorc/v4/config"
 	"github.com/ystia/yorc/v4/deployments"
 	"github.com/ystia/yorc/v4/events"
+	"github.com/ystia/yorc/v4/locations"
 	"github.com/ystia/yorc/v4/log"
 	"github.com/ystia/yorc/v4/tasks"
 	"github.com/ystia/yorc/v4/tosca"
@@ -29,13 +30,22 @@ type delegateExecutor struct{}
 
 func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Configuration, taskID, deploymentID, nodeName, delegateOperation string) error {
 	log.Debugf("Entering plugin ExecDelegate")
-	// Here is how to retrieve config parameters from Yorc config file
-	if conf.Infrastructures["myinfra"] != nil {
-		log.Printf("********Got myinfra infrastructure configured")
-		for _, k := range conf.Infrastructures["myinfra"].Keys() {
-			log.Printf("configuration key: %s", k)
+
+	// Here is how to retrieve location properties
+
+	var locationProps config.DynamicMap
+	locationMgr, err := locations.GetManager(conf)
+	if err == nil {
+		return err
+	}
+
+	locationProps, err = locationMgr.GetLocationProperties("my-location", "my-infra")
+	if err == nil {
+		log.Printf("********Got my-location properties")
+		for k, v := range locationProps {
+			log.Printf("location key property: %s", k)
+			log.Printf("location key value: %s", v)
 		}
-		log.Printf("*******Secret key: %q", conf.Infrastructures["myinfra"].GetStringOrDefault("myprop", "not found!"))
 
 		// TODO: add here the code retrieving properties to connect to the API
 		// allowing to allocated compute instances/connect to your

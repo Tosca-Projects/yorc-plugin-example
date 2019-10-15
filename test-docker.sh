@@ -30,8 +30,9 @@ echo "Running a Yorc container..."
 docker pull ystia-docker.jfrog.io/ystia/yorc:latest
 
 docker run -d --rm \
-    -e 'YORC_INFRA_MYINFRA_MYPROP=myvalue' \
-	-e 'YORC_LOG=1' \
+  -e 'YORC_LOCATIONS_FILE_PATH=/var/yorc/conf/locations.json' \
+  -e 'YORC_LOG=1' \
+  --mount "type=bind,src=${scriptDir}/conf,dst=/var/yorc/conf" \
 	--mount "type=bind,src=${scriptDir}/bin,dst=/var/yorc/plugins" \
 	--mount "type=bind,src=${scriptDir}/tosca,dst=/var/yorc/topology" \
     --name yorc \
@@ -41,7 +42,7 @@ trap cleanup EXIT
 waitForYorcStartup
 
 echo "Deploying application example"
-docker exec -it yorc sh -c "yorc d deploy --id my-test-app /var/yorc/topology/topology.yaml"
+docker exec -it yorc sh -c "yorc d deploy --id my-test-app /var/yorc/topology"
 
 docker exec -it yorc sh -c "yorc d info --follow  my-test-app" 
 
