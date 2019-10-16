@@ -41,7 +41,7 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 	// Printing a debug level message
 	log.Debugf("Entering ExecOperation")
 	// Printing an INFO level message
-	log.Printf("Executing operation %q", operation.Name)
+	log.Debugf("Executing operation %q", operation.Name)
 
 	// Printing logs using the standard logger.
 	// The following log levels will be inferred by Yorc Server from the log
@@ -57,17 +57,19 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 
 	var locationProps config.DynamicMap
 	locationMgr, err := locations.GetManager(cfg)
-	if err == nil {
+	if err != nil {
 		return err
 	}
 
 	locationProps, err = locationMgr.GetLocationProperties("my-plugin-location", "my-plugin-infra")
-	if err == nil {
-		log.Printf("********Got my-plugin-location properties")
-		for k, v := range locationProps {
-			log.Printf("location key property: %s", k)
-			log.Printf("location key value: %s", v)
-		}
+	if err != nil {
+		return err
+	}
+
+	log.Debugf("********Got my-plugin-location properties")
+	for k, v := range locationProps {
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property key: %q", k)
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property value: %q", v)
 	}
 
 	// Emit a log or an event

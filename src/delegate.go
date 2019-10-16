@@ -35,22 +35,24 @@ func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Config
 
 	var locationProps config.DynamicMap
 	locationMgr, err := locations.GetManager(conf)
-	if err == nil {
+	if err != nil {
 		return err
 	}
 
 	locationProps, err = locationMgr.GetLocationProperties("my-location", "my-infra")
-	if err == nil {
-		log.Printf("********Got my-location properties")
-		for k, v := range locationProps {
-			log.Printf("location key property: %s", k)
-			log.Printf("location key value: %s", v)
-		}
-
-		// TODO: add here the code retrieving properties to connect to the API
-		// allowing to allocated compute instances/connect to your
-		// infrastructure
+	if err != nil {
+		return err
 	}
+
+	log.Debugf("********Got my-location properties")
+	for k, v := range locationProps {
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property key: %q", k)
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property value: %q", v)
+	}
+
+	// TODO: add here the code retrieving properties to connect to the API
+	// allowing to allocated compute instances/connect to your
+	// infrastructure
 
 	// Get a consul client to interact with the deployment API
 	cc, err := conf.GetConsulClient()
