@@ -42,7 +42,7 @@ trap cleanup EXIT
 waitForYorcStartup
 
 echo "Deploying application example"
-docker exec -it yorc sh -c "yorc d deploy --id my-test-app /var/yorc/topology"
+docker exec -it yorc sh -c "yorc d deploy --id my-test-app /var/yorc/topology/topology.yaml"
 
 docker exec -it yorc sh -c "yorc d info --follow  my-test-app" 
 
