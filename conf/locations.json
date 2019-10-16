@@ -1,0 +1,20 @@
+{
+  "locations":[
+    { "name": "my-location",
+      "type": "my-infra",
+      "properties": {
+        "propOne": "valueOne",
+        "propTwo": "valueTwo",
+        "propThree": "valueThree"
+      }
+    },
+    { "name": "my-plugin-location",
+      "type": "my-plugin-infra",
+      "properties": {
+        "plugin-propOne": "valueOne",
+        "plugin-propTwo": "valueTwo",
+        "plugin-propThree": "valueThree"
+      }
+    }
+  ]
+}

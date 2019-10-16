@@ -22,6 +22,7 @@ import (
 
 	"github.com/ystia/yorc/v4/config"
 	"github.com/ystia/yorc/v4/events"
+	"github.com/ystia/yorc/v4/locations"
 	"github.com/ystia/yorc/v4/log"
 	"github.com/ystia/yorc/v4/prov"
 )
@@ -40,7 +41,7 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 	// Printing a debug level message
 	log.Debugf("Entering ExecOperation")
 	// Printing an INFO level message
-	log.Printf("Executing operation %q", operation.Name)
+	log.Debugf("Executing operation %q", operation.Name)
 
 	// Printing logs using the standard logger.
 	// The following log levels will be inferred by Yorc Server from the log
@@ -54,11 +55,21 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 		return err
 	}
 
-	if cfg.Infrastructures["my-plugin"] != nil {
-		for _, k := range cfg.Infrastructures["my-plugin"].Keys() {
-			log.Printf("configuration key: %s", k)
-		}
-		log.Printf("Secret key: %q", cfg.Infrastructures["my-plugin"].GetStringOrDefault("test", "not found!"))
+	var locationProps config.DynamicMap
+	locationMgr, err := locations.GetManager(cfg)
+	if err != nil {
+		return err
+	}
+
+	locationProps, err = locationMgr.GetLocationPropertiesForNode(deploymentID, nodeName, "my-plugin-infra")
+	if err != nil {
+		return err
+	}
+
+	log.Debugf("********Got my-plugin-location properties")
+	for k, v := range locationProps {
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property key: %q", k)
+		events.WithContextOptionalFields(ctx).NewLogEntry(events.LogLevelINFO, deploymentID).Registerf("**********location property value: %q", v)
 	}
 
 	// Emit a log or an event

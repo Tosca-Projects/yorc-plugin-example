@@ -30,8 +30,9 @@ echo "Running a Yorc container..."
 docker pull ystia-docker.jfrog.io/ystia/yorc:latest
 
 docker run -d --rm \
-    -e 'YORC_INFRA_MYINFRA_MYPROP=myvalue' \
-	-e 'YORC_LOG=1' \
+  -e 'YORC_LOCATIONS_FILE_PATH=/var/yorc/conf/locations.json' \
+  -e 'YORC_LOG=1' \
+  --mount "type=bind,src=${scriptDir}/conf,dst=/var/yorc/conf" \
 	--mount "type=bind,src=${scriptDir}/bin,dst=/var/yorc/plugins" \
 	--mount "type=bind,src=${scriptDir}/tosca,dst=/var/yorc/topology" \
     --name yorc \
@@ -49,9 +50,14 @@ echo "Checking deployment logs"
 docker exec -it yorc sh -c "yorc d logs --no-stream  my-test-app" | tee trace.log > /dev/null
 
 echo "Checking expected outputs..."
-
+cat trace.log
+echo ".............................."
 grep '**********Provisioning node "Compute" of type "mytosca.types.Compute"' trace.log || { echo "Missing Delegate executor log"; exit 1; }
 grep '******Executing operation "standard.create" on node "Soft"' trace.log || { echo "Missing Operation executor log"; exit 1; }
+grep '**********location property key: "plugin-propOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
+grep '**********location property value: "valueOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
+grep '**********location property key: "propOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
+grep '**********location property value: "valueOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
 
 echo "Test succeeded"
 

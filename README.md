@@ -10,7 +10,7 @@ The plugin example implemented here provides :
 * an example of application TOSCA topology template using this new definition, in file [tosca/topology.yaml](https://github.com/ystia/yorc-plugin-example/blob/master/tosca/topology.yaml)
 * a [delegate executor](https://github.com/ystia/yorc-plugin-example/blob/master/src/delegate.go) that will manage the provisioning of such compute instance (here it just prints logs and send events)
 * an [operation executor](https://github.com/ystia/yorc-plugin-example/blob/master/src/operation.go) allowing to execute operations (here it just prints logs and send events)
-* This plugin expects an infrastructure `myinfra` property `myprop` to be defined (in a real case, it could be a URL and credentials to access the service allowing to manage the infrastructure).
+* This plugin expects two locations named `my-location` and `my-plugin-location` to be defined in conf/locations.json  (in a real case, it could be a URL and credentials to access the service allowing to manage the infrastructure).
 
 ## Build
 
@@ -36,12 +36,13 @@ $ docker pull ystia-docker.jfrog.io/ystia/yorc:latest
 Run Yorc mounting the directory `bin` in your host on the container directory `/var/yorc/plugins` (default path where Yorc expects to find plugins),
 and mounting as well the directory `tosca` where an example of TOSCA deployment topology is provided.
 
-Define as well the infrastructure `myinfra` property `myprop` used by the example plugin. It can be defined in Yorc configuration file, here it is passed as an environment variable `YORC_INFRA_MYINFRA_MYPROP`:
+Two locations with properties and their own infrastructure type have been defined and are expected in this plugin. The locations file path configuration is passed as an environment variable `YORC_LOCATIONS_FILE_PATH`:
 
 ```bash
 $ docker run -d --rm \
-    -e 'YORC_INFRA_MYINFRA_MYPROP=myvalue' \
+    -e 'YORC_LOCATIONS_FILE_PATH=/var/yorc/conf/locations.json' \
     -e 'YORC_LOG=1' \
+    --mount "type=bind,src=$PWD/conf,dst=/var/yorc/conf" \
     --mount "type=bind,src=$PWD/bin,dst=/var/yorc/plugins" \
     --mount "type=bind,src=$PWD/tosca,dst=/var/yorc/topology" \
     --name yorc \
