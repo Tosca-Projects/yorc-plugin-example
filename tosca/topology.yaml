@@ -28,6 +28,8 @@ topology_template:
             default_instances: 1
     Soft:
       type: mytosca.types.Soft
+      metadata:
+        location: "my-plugin-location"
 
   workflows:
     install:

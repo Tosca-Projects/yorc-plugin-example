@@ -61,7 +61,7 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 		return err
 	}
 
-	locationProps, err = locationMgr.GetLocationProperties("my-plugin-location", "my-plugin-infra")
+	locationProps, err = locationMgr.GetLocationPropertiesForNode(deploymentID, nodeName, "my-plugin-infra")
 	if err != nil {
 		return err
 	}
