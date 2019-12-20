@@ -3,7 +3,7 @@ module github.com/src
 require (
 	github.com/hashicorp/go-hclog v0.8.0
 	github.com/hashicorp/go-plugin v1.0.0
-	github.com/ystia/yorc/v4 v4.0.0-M5
+	github.com/ystia/yorc/v4 v4.0.0-M7.0.20191218125116-c1c26087b9a5
 	gopkg.in/cookieo9/resources-go.v2 v2.0.0-20150225115733-d27c04069d0d
 )
 

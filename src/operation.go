@@ -50,18 +50,13 @@ func (d *operationExecutor) ExecOperation(ctx context.Context, cfg config.Config
 	stdlog.Printf("[WARN] This is a plugin warning log on standard log example")
 	stdlog.Printf("This is a plugin log on standard log example")
 
-	_, err := cfg.GetConsulClient()
-	if err != nil {
-		return err
-	}
-
 	var locationProps config.DynamicMap
 	locationMgr, err := locations.GetManager(cfg)
 	if err != nil {
 		return err
 	}
 
-	locationProps, err = locationMgr.GetLocationPropertiesForNode(deploymentID, nodeName, "my-plugin-infra")
+	locationProps, err = locationMgr.GetLocationPropertiesForNode(ctx, deploymentID, nodeName, "my-plugin-infra")
 	if err != nil {
 		return err
 	}

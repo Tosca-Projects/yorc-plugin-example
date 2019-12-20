@@ -54,26 +54,19 @@ func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Config
 	// allowing to allocated compute instances/connect to your
 	// infrastructure
 
-	// Get a consul client to interact with the deployment API
-	cc, err := conf.GetConsulClient()
-	if err != nil {
-		return err
-	}
-	kv := cc.KV()
-
 	// Get node instances related to this task (may be a subset of all instances for a scaling operation for instance)
-	instances, err := tasks.GetInstances(kv, taskID, deploymentID, nodeName)
+	instances, err := tasks.GetInstances(ctx, taskID, deploymentID, nodeName)
 	if err != nil {
 		return err
 	}
 
 	// Emit events and logs on instance status change
 	for _, instanceName := range instances {
-		deployments.SetInstanceStateWithContextualLogs(ctx, kv, deploymentID, nodeName, instanceName, tosca.NodeStateCreating)
+		deployments.SetInstanceStateWithContextualLogs(ctx, deploymentID, nodeName, instanceName, tosca.NodeStateCreating)
 	}
 
 	// Use the deployments api to get info about the node to provision
-	nodeType, err := deployments.GetNodeType(cc.KV(), deploymentID, nodeName)
+	nodeType, err := deployments.GetNodeType(ctx, deploymentID, nodeName)
 	if err != nil {
 		return err
 	}
@@ -83,7 +76,7 @@ func (de *delegateExecutor) ExecDelegate(ctx context.Context, conf config.Config
 
 	for _, instanceName := range instances {
 		// TODO: add here the code allowing to create a Compute Instance
-		deployments.SetInstanceStateWithContextualLogs(ctx, kv, deploymentID, nodeName, instanceName, tosca.NodeStateStarted)
+		deployments.SetInstanceStateWithContextualLogs(ctx, deploymentID, nodeName, instanceName, tosca.NodeStateStarted)
 	}
 	return nil
 }
