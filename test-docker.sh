@@ -52,12 +52,12 @@ docker exec -it yorc sh -c "yorc d logs --no-stream  my-test-app" | tee trace.lo
 echo "Checking expected outputs..."
 cat trace.log
 echo ".............................."
-grep '**********Provisioning node "Compute" of type "mytosca.types.Compute"' trace.log || { echo "Missing Delegate executor log"; exit 1; }
-grep '******Executing operation "standard.create" on node "Soft"' trace.log || { echo "Missing Operation executor log"; exit 1; }
-grep '**********location property key: "plugin-propOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
-grep '**********location property value: "valueOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
-grep '**********location property key: "propOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
-grep '**********location property value: "valueOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
+grep -i '**********Provisioning node "Compute" of type "mytosca.types.Compute"' trace.log || { echo "Missing Delegate executor log"; exit 1; }
+grep -i '******Executing operation "standard.create" on node "Soft"' trace.log || { echo "Missing Operation executor log"; exit 1; }
+grep -i '**********location property key: "plugin-propOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
+grep -i '**********location property value: "valueOne"' trace.log || { echo "Missing Location property executor log"; exit 1; }
+grep -i '**********location property key: "propOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
+grep -i '**********location property value: "valueOne"' trace.log || { echo "Missing Location property delegate log"; exit 1; }
 
 echo "Test succeeded"
 
